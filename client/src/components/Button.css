@@ -1,0 +1,15 @@
+/* src/components/Button.css */
+.btn {
+    padding: 0.6rem 1.2rem;
+    border: none;
+    font-size: 1rem;
+    cursor: pointer;
+    color: white;
+  }
+  .btn--primary {
+    background-color: var(--primary-red);
+  }
+  .btn--secondary {
+    background-color: var(--primary-gray);
+  }
+  

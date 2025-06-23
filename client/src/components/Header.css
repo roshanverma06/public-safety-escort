@@ -1,0 +1,99 @@
+/* === General Header === */
+.navbar {
+  position: relative;
+  width: 100%;
+  background-color: #cc0000; /* IIT red */
+  color: white;
+  z-index: 1000;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0.8rem 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.navbar-title {
+  font-size: 1.1rem;
+  font-weight: bold;
+  white-space: nowrap;
+}
+
+/* === Desktop Links === */
+.navbar-links {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.navbar-links a {
+  text-decoration: none;
+  color: white;
+  position: relative;
+  font-weight: 500;
+}
+
+.navbar-links a::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 0%;
+  height: 2px;
+  background-color: white;
+  transition: width 0.3s ease;
+}
+
+.navbar-links a:hover::after {
+  width: 100%;
+  background-color: #ffdddd;
+}
+
+/* === Toggle (Mobile) === */
+.menu-toggle {
+  display: none;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: white;
+  cursor: pointer;
+}
+
+/* === Mobile Styles === */
+
+@media (max-width: 768px) {
+    .navbar-links {
+      display: none;
+      flex-direction: column;
+      align-items: flex-start;
+      background: white;
+      width: 100%;
+      position: absolute; /* keep this */
+      top: 100%;           /* ensures it drops right below navbar */
+      left: 0;
+      padding: 1rem 1.5rem;
+      box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.1);
+      border-top: 1px solid #ddd;
+      z-index: 999;
+    }
+  
+    .navbar-links.show {
+      display: flex;
+    }
+  
+    .navbar-links a {
+      width: 100%;
+      padding: 0.75rem 0;
+      border-bottom: 1px solid #ddd;
+      color: #cc0000;
+      font-weight: bold;
+    }
+  
+    .menu-toggle {
+      display: block;
+    }
+  }
+  

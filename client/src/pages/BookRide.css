@@ -1,0 +1,81 @@
+.bookride-container {
+    max-width: 600px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-family: 'Source Sans Pro', sans-serif;
+  }
+  
+  .bookride-container h1 {
+    color: #cc0000; /* IIT primary red */
+    text-align: center;
+    margin-bottom: 1.5rem;
+    margin-top: 4.5rem;
+  }
+  
+  .bookride-form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .bookride-form label {
+    font-weight: 600;
+    margin-top: 1rem;
+  }
+  
+  .bookride-form input,
+  .bookride-form textarea {
+    padding: 0.6rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-top: 0.4rem;
+  }
+
+  .bookride-form select {
+    padding: 0.6rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-top: 0.4rem;
+    font-size: 1rem;
+    background-color: #fff;
+    appearance: none;
+    background-image: url("data:image/svg+xml;utf8,<svg fill='%2366676B' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 0.7rem center;
+    background-size: 1rem;
+  }
+  
+  
+.bookride-form button {
+  background-color: #cc0000;
+  color: white;
+  padding: 0.6rem 1.5rem;
+  margin: 1.5rem auto 0;
+  border: none;
+  border-radius: 4px;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 1rem;
+  display: block; /* ensures margin auto works */
+  width: fit-content;
+}
+
+.bookride-form button:hover {
+  background-color: #a70000;
+}
+
+
+  .radio-group {
+    display: flex;
+    flex-direction: column;
+    margin-top: 0.5rem;
+  }
+  
+  .radio-group label {
+    font-weight: normal;
+    margin-top: 0.3rem;
+  }
+  
+  

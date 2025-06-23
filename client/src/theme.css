@@ -1,0 +1,15 @@
+/* in src/theme.css */
+:root {
+    --primary-red: #CC0000;
+    --primary-gray: #76777B;
+    --text-black: #000000;
+  }
+  body {
+    font-family: 'Source Sans Pro', sans-serif; /* per brand guide  :contentReference[oaicite:4] {index=4}*/
+    color: var(--text-black);
+    margin: 0;
+  }
+  h1, h2, h3 {
+    color: var(--primary-red);
+  }
+    
