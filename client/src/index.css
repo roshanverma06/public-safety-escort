@@ -7,6 +7,15 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* App.css or index.css */
+/* body {
+  margin: 0;
+  padding-top: 80px; 
+  font-family: 'Arial', sans-serif;
+  background-color: #f8f8f8;
+} */
+
+
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;

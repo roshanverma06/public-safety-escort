@@ -1,0 +1,72 @@
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: calc(100vh - 80px); /* full height minus header */
+    padding-top: 1rem;
+  }
+  
+  
+  .login-form {
+    background-color: #f9f9f9;
+    padding: 2rem 2.5rem;
+    border-radius: 8px;
+    width: 100%;
+    max-width: 400px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .login-form h2 {
+    text-align: center;
+    color: #cc0000;
+    margin-bottom: 1.5rem;
+  }
+  
+  .login-form label {
+    display: block;
+    margin-bottom: 1rem;
+    font-weight: bold;
+  }
+  
+  .login-form input {
+    width: 100%;
+    padding: 10px;
+    margin-top: 0.3rem;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+  }
+  
+  .login-form button {
+    display: block;
+    margin: 1.5rem auto 0;
+    padding: 10px 20px;
+    background-color: #cc0000;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .login-form button:hover {
+    background-color: #a80000;
+  }
+
+  .login-links {
+    margin-top: 1rem;
+    text-align: center;
+  }
+  
+  .login-links a {
+    color: #c8102e; /* IIT red */
+    text-decoration: none;
+    margin: 0 0.25rem;
+    font-weight: 500;
+    transition: color 0.3s ease;
+  }
+  
+  .login-links a:hover {
+    text-decoration: underline;
+    color: #a80000; /* darker red on hover */
+  }
+  
+  

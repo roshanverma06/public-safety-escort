@@ -9,6 +9,8 @@ import QueueStatus from './pages/QueueStatus';
 import OTP from './pages/OTP';
 import DriverDashboard from './pages/DriverDashboard';
 import AdminDashboard from './pages/AdminDashboard';
+import Register from './pages/Register';
+import ForgotPassword from './pages/ForgotPassword';
 
 function App() {
   return (
@@ -21,6 +23,8 @@ function App() {
         <Route path="/otp" element={<OTP />} />
         <Route path="/driver" element={<DriverDashboard />} />
         <Route path="/admin" element={<AdminDashboard />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
       </Routes>
       <Footer />
     </BrowserRouter>
