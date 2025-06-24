@@ -1,0 +1,42 @@
+.ride-confirmation-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: calc(100vh - 80px);
+    padding: 2rem;
+    background-color: #f9f9f9;
+    text-align: center;
+  }
+  
+  .ride-confirmation-container h2 {
+    font-size: 1.8rem;
+    color: #cc0000;
+    margin-bottom: 1rem;
+  }
+  
+  .wait-time {
+    font-size: 1.2rem;
+    color: #444;
+  }
+  
+  .ride-confirmation-container button {
+    padding: 0.75rem 1.5rem;
+    background-color: #cc0000;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+  
+  .ride-confirmation-container button:hover {
+    background-color: #a80000;
+  }
+  .wait-message {
+    font-size: 1.1rem;
+    color: #333;
+  }
+  
+  

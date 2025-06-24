@@ -11,6 +11,7 @@ import DriverDashboard from './pages/DriverDashboard';
 import AdminDashboard from './pages/AdminDashboard';
 import Register from './pages/Register';
 import ForgotPassword from './pages/ForgotPassword';
+import RideConfirmation from './pages/RideConfirmation';
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
         <Route path="/admin" element={<AdminDashboard />} />
         <Route path="/register" element={<Register />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/ride-confirmation" element={<RideConfirmation />} />
       </Routes>
       <Footer />
     </BrowserRouter>

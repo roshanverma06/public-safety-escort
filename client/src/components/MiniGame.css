@@ -1,0 +1,73 @@
+.game-container {
+    text-align: center;
+    padding-bottom: 10px;
+  }
+  
+  .game {
+    position: relative;
+    width: 300px;
+    height: 200px;
+    background-color: #f1f1f1;
+    border: 2px solid #ccc;
+    margin: 1rem auto;
+    overflow: hidden;
+  }
+  
+  .character {
+    position: absolute;
+    bottom: 0;
+    left: 40px;
+    font-size: 2rem;
+    top: 150px;
+    transition: top 0.3s;
+  }
+  
+  .character.jump {
+    top: 60px !important;
+  }
+  
+  .obstacle {
+    position: absolute;
+    bottom: 0;
+    left: 300px;
+    font-size: 2rem;
+  }
+  
+  .obstacle.moving {
+    animation: moveObstacle 2s linear infinite;
+    animation-duration: 2000ms;
+  }
+  
+  @keyframes moveObstacle {
+    0% {
+      left: 300px;
+    }
+    100% {
+      left: -50px;
+    }
+  }
+  
+  .game-btn {
+    background-color: #c8102e;
+    color: white;
+    padding: 8px 16px;
+    font-size: 1rem;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .game-btn:hover {
+    background-color: #990000;
+  }
+  
+  .game-over {
+    color: #b30000;
+    font-weight: bold;
+    margin-top: 1rem;
+  }
+  .hawk-img {
+    width: 50px;
+    height: auto;
+  }  
