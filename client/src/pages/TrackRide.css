@@ -1,0 +1,51 @@
+.track-container {
+    max-width: 600px;
+    margin: 20px auto 20px;
+    padding: 20px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 8px rgba(0,0,0,0.1);
+    text-align: center;
+  }
+  
+  .tracking-info p {
+    font-size: 1rem;
+    margin: 8px 0;
+  }
+  
+  .otp-box {
+    background-color: #c8102e;
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 6px;
+    font-weight: bold;
+  }
+  
+  .map-placeholder {
+    height: 350px;
+    background-color: #f5f5f5;
+    border: 2px dashed #ccc;
+    border-radius: 6px;
+    margin: 20px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #777;
+  }
+  
+  .navigate-btn {
+    background-color: #c8102e;
+    color: white;
+    padding: 10px 16px;
+    font-size: 1rem;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    width: 100%;
+    transition: background-color 0.3s;
+  }
+  
+  .navigate-btn:hover {
+    background-color: #a50d23;
+  }
+  

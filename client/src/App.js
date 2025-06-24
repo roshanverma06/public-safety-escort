@@ -12,6 +12,7 @@ import AdminDashboard from './pages/AdminDashboard';
 import Register from './pages/Register';
 import ForgotPassword from './pages/ForgotPassword';
 import RideConfirmation from './pages/RideConfirmation';
+import TrackRide from './pages/TrackRide';
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/ride-confirmation" element={<RideConfirmation />} />
+        <Route path="/track" element={<TrackRide />} />
       </Routes>
       <Footer />
     </BrowserRouter>
