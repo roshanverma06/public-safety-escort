@@ -2,7 +2,6 @@
 .navbar {
   position: relative;
   width: 100%;
-  /* margin-bottom: 2cm; */
   background-color: #cc0000; /* IIT red */
   color: white;
   z-index: 1000;
@@ -23,78 +22,70 @@
   font-weight: bold;
   white-space: nowrap;
 }
-
-/* === Desktop Links === */
-.navbar-links {
-  display: flex;
-  gap: 1.5rem;
-}
-
-.navbar-links a {
-  text-decoration: none;
+.navbar-title a{
   color: white;
+  text-decoration: none;
+}
+
+.profile-container {
+  display: flex;
+  align-items: center;
+}
+
+
+.profile-container {
   position: relative;
-  font-weight: 500;
+  display: inline-block;
+  margin-left: 15px;
 }
 
-.navbar-links a::after {
-  content: '';
+.profile-icon {
+  cursor: pointer;
+  color: white;
+}
+
+.profile-dropdown {
   position: absolute;
-  bottom: -4px;
-  left: 0;
-  width: 0%;
-  height: 2px;
+  top: 35px;
+  right: 0;
   background-color: white;
-  transition: width 0.3s ease;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  z-index: 999;
+  min-width: 160px;
 }
 
-.navbar-links a:hover::after {
+.profile-dropdown button {
   width: 100%;
-  background-color: #ffdddd;
-}
-
-/* === Toggle (Mobile) === */
-.menu-toggle {
-  display: none;
+  padding: 10px;
   background: none;
   border: none;
-  font-size: 1.5rem;
-  color: white;
+  text-align: left;
   cursor: pointer;
+  font-size: 14px;
 }
 
-/* === Mobile Styles === */
+.profile-dropdown button:hover {
+  background-color: #f3f3f3;
+}
+.profile-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+}
 
-@media (max-width: 768px) {
-    .navbar-links {
-      display: none;
-      flex-direction: column;
-      align-items: flex-start;
-      background: white;
-      width: 100%;
-      position: absolute; /* keep this */
-      top: 100%;           /* ensures it drops right below navbar */
-      left: 0;
-      padding: 1rem 1.5rem;
-      box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.1);
-      border-top: 1px solid #ddd;
-      z-index: 999;
-    }
-  
-    .navbar-links.show {
-      display: flex;
-    }
-  
-    .navbar-links a {
-      width: 100%;
-      padding: 0.75rem 0;
-      border-bottom: 1px solid #ddd;
-      color: #cc0000;
-      font-weight: bold;
-    }
-  
-    .menu-toggle {
-      display: block;
-    }
-  }
+.profile-avatar {
+  color: #cc0000;
+}
+
+.profile-name {
+  font-weight: bold;
+  color: #333;
+}
+
+
+
+
   

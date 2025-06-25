@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './Register.css';
+import axios from 'axios';
 
 function Register() {
   const [formData, setFormData] = useState({
@@ -10,6 +11,8 @@ function Register() {
     password: '',
     confirmPassword: '',
   });
+  const [successMessage, setSuccessMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
 
   const handleChange = (e) => {
     setFormData({
@@ -18,15 +21,25 @@ function Register() {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Registered student:', formData);
-    // You can send formData to the backend here
+    setSuccessMessage('');
+    setErrorMessage('');
+
+    try {
+      const response = await axios.post("http://localhost:5050/api/auth/register", formData);
+      setSuccessMessage('Successfully registered!');
+      setFormData({ name: '', cwid: '', email: '', address: '', password: '' });
+    } catch (error) {
+      setErrorMessage(error.response?.data?.message || 'Registration failed.');
+    }
   };
 
   return (
     <div className="register-container">
       <h2>Student Registration</h2>
+      {successMessage && <p style={{ color: 'green' }}>{successMessage}</p>}
+      {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
       <form onSubmit={handleSubmit} className="register-form">
         <label>
           Full Name
@@ -55,7 +68,7 @@ function Register() {
 
         <label>
           Confirm Password
-          <input type="password" name="confirmPassword" value={formData.confirmPassword} onChange={handleChange} required />
+          <input type="password" name="confirmPassword" value={formData.confirmPassword || ''} onChange={handleChange} required />
         </label>
 
         <div className="login-links">

@@ -1,39 +1,75 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './Login.css';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
-  const [cwid, setCwid] = useState('');
-  const [password, setPassword] = useState('');
 
-  const handleSubmit = (e) => {
+
+  const [formData, setFormData] = useState({ email: '', password: '' });
+  const [error, setError] = useState('');
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const user = localStorage.getItem('user');
+    if (user) {
+      navigate('/book-ride'); // or dashboard/status depending on your flow
+    }
+  }, [navigate]);
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // TODO: Replace with API call
-    console.log('Logging in with:', cwid, password);
+    setError(''); // reset error
+
+    try {
+      const res = await axios.post('http://localhost:5050/api/auth/login', formData);
+
+      if (res.status === 200) {
+        console.log('✅ Login successful:', res.data);
+
+        // Optionally save user to localStorage or context
+        localStorage.setItem('user', JSON.stringify(res.data.user));
+
+        // Redirect to Book Ride page
+        navigate('/book-ride');
+      }
+    } catch (err) {
+      console.error('❌ Login failed:', err.response?.data?.message || err.message);
+      setError('Login failed. Please check your credentials.');
+    }
   };
 
   return (
     <div className="login-container">
       <form className="login-form" onSubmit={handleSubmit}>
         <h2>Student Login</h2>
-
+        {error && <p style={{ color: 'red' }}>{error}</p>}
         <label>
-          CWID:
+          Email:
           <input
-            type="text"
-            value={cwid}
-            onChange={(e) => setCwid(e.target.value)}
-            required
-          />
+          type="email"
+          name="email"
+          placeholder="Student Email"
+          value={formData.email}
+          onChange={handleChange}
+          required
+        />
         </label>
 
         <label>
           Password:
           <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
+          type="password"
+          name="password"
+          placeholder="Password"
+          value={formData.password}
+          onChange={handleChange}
+          required
+        />
         </label>
         <div className="login-links">
             <a href="/forgotpassword">Forgot Password?</a>

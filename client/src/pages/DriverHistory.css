@@ -1,0 +1,21 @@
+.driver-history-container {
+    max-width: 800px;
+    margin: 20px auto 40px;
+    padding: 20px;
+    text-align: center;
+  }
+  
+  .history-card {
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 12px rgba(0,0,0,0.06);
+    margin-bottom: 20px;
+    text-align: left;
+  }
+  
+  .history-card p {
+    margin: 6px 0;
+    font-size: 0.95rem;
+  }
+  

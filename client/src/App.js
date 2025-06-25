@@ -13,6 +13,8 @@ import Register from './pages/Register';
 import ForgotPassword from './pages/ForgotPassword';
 import RideConfirmation from './pages/RideConfirmation';
 import TrackRide from './pages/TrackRide';
+import DriverHistory from './pages/DriverHistory';
+import ProtectedRoute from './components/ProtectedRoute';
 
 function App() {
   return (
@@ -20,15 +22,14 @@ function App() {
     <Header />
       <Routes>
         <Route path="/" element={<Login />} />
-        <Route path="/book-ride" element={<BookRide />} />
-        <Route path="/queue-status" element={<QueueStatus />} />
-        <Route path="/otp" element={<OTP />} />
-        <Route path="/driver" element={<DriverDashboard />} />
-        <Route path="/admin" element={<AdminDashboard />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/forgot-password" element={<ForgotPassword />} />
-        <Route path="/ride-confirmation" element={<RideConfirmation />} />
-        <Route path="/track" element={<TrackRide />} />
+        <Route path="/book-ride" element={<ProtectedRoute><BookRide /></ProtectedRoute>} />
+        <Route path="/driver" element={<ProtectedRoute> <DriverDashboard /></ProtectedRoute>} />
+        <Route path="/admin" element={<ProtectedRoute><AdminDashboard /></ProtectedRoute>} />
+        <Route path="/forgot-password" element={<ProtectedRoute><ForgotPassword /></ProtectedRoute>} />
+        <Route path="/ride-confirmation" element={<ProtectedRoute><RideConfirmation /></ProtectedRoute>} />
+        <Route path="/track" element={<ProtectedRoute><TrackRide /></ProtectedRoute>} />
+        <Route path="/history" element={<ProtectedRoute><DriverHistory /></ProtectedRoute>} />
       </Routes>
       <Footer />
     </BrowserRouter>
