@@ -19,6 +19,15 @@ app.get('/', (req, res) => {
   res.send('Server is up and running 🚀');
 });
 
+const profileRoutes = require('./routes/profile');
+app.use('/api/profile', profileRoutes);
+
+const bookRideRoutes = require('./routes/booking');
+app.use('/api/booking', bookRideRoutes);
+
+
+
+
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);

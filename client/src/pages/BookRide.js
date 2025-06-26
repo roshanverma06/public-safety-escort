@@ -2,56 +2,73 @@
 
 import React, { useState, useEffect } from 'react';
 import './BookRide.css';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 function BookRide() {
-  // Simulated profile info – later replace with real auth/user context
-  const studentProfile = {
-    name: 'Roshan Verma',
-    cwid: 'A12345678',
-    savedAddress: '3500 S State St, Chicago, IL',
-  };
-
-  const [studentName, setStudentName] = useState('');
-  const [pickupLocation, setPickupLocation] = useState('');
+  const [formData, setFormData] = useState({
+    name: '',
+    cwid: '',
+    address: '',
+    pickup: '',
+    dropoff: ''
+  });
   const [useSavedDrop, setUseSavedDrop] = useState(true);
   const [manualDrop, setManualDrop] = useState('');
+  const navigate = useNavigate();
 
   useEffect(() => {
-    // Simulate fetching from profile
-    setStudentName(studentProfile.name);
+    const fetchProfile = async () => {
+      const user = JSON.parse(localStorage.getItem('user'));
+      if (!user?.email) return;
+
+      try {
+        const res = await axios.get(`http://localhost:5050/api/profile/${user.email}`);
+        const { name, cwid, address } = res.data;
+        setFormData(prev => ({ ...prev, name, cwid, address, dropoff: address }));
+      } catch (err) {
+        console.error('❌ Failed to fetch profile:', err);
+      }
+    };
+
+    fetchProfile();
   }, []);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const rideData = {
-      name: studentName,
-      cwid: studentProfile.cwid,
-      pickup: pickupLocation,
-      drop: useSavedDrop ? studentProfile.savedAddress : manualDrop,
+
+    const bookingData = {
+      ...formData,
+      dropoff: useSavedDrop ? formData.address : manualDrop,
     };
-    console.log('Booking data:', rideData);
+
+    try {
+      const res = await axios.post('http://localhost:5050/api/booking', bookingData);
+      const { queuePosition, estimatedWait } = res.data;
+      
+
+      // Redirect to confirmation page with estimated wait time
+      navigate(`/ride-confirmation?position=${queuePosition}&wait=${estimatedWait}`);
+    } catch (err) {
+      console.error('Booking failed:', err);
+      alert('Booking failed. Please try again.');
+    }
   };
 
   return (
     <div className="bookride-container">
       <h1>Book a Safety Escort Ride</h1>
       <form className="bookride-form" onSubmit={handleSubmit}>
-
         <label>Student Name:</label>
-        <input
-          type="text"
-          value={studentName}
-          onChange={(e) => setStudentName(e.target.value)}
-          required
-        />
+        <input type="text" value={formData.name} disabled />
 
         <label>Student CWID:</label>
-        <input type="text" value={studentProfile.cwid} disabled />
+        <input type="text" value={formData.cwid} disabled />
 
         <label>Pickup Location:</label>
         <select
-          value={pickupLocation}
-          onChange={(e) => setPickupLocation(e.target.value)}
+          value={formData.pickup}
+          onChange={(e) => setFormData(prev => ({ ...prev, pickup: e.target.value }))}
           required
         >
           <option value="">Select pickup point</option>
@@ -69,7 +86,7 @@ function BookRide() {
               checked={useSavedDrop}
               onChange={() => setUseSavedDrop(true)}
             />
-            Use saved address ({studentProfile.savedAddress})
+            Use saved address ({formData.address})
           </label>
           <label>
             <input
