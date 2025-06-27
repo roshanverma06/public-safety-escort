@@ -19,20 +19,40 @@ const RideConfirmation = () => {
 
   const user = JSON.parse(localStorage.getItem('user'));
 
-  // Countdown timer
   useEffect(() => {
-    const timer = setInterval(() => {
-      setWaitTime((prevTime) => {
-        if (prevTime <= 1) {
-          clearInterval(timer);
-          return 0;
+    const interval = setInterval(async () => {
+      try {
+        const res = await axios.get(`http://localhost:5050/api/booking/status/${user.email}`);
+        console.log(res.data.status);
+        if (res.data.status === 'assigned') {
+          window.location.href = '/track';
         }
-        return prevTime - 1;
-      });
-    }, 1000);
+        
+      } catch (err) {
+        console.error('Error checking status', err);
+      }
+    }, 10000);
+  
+    return () => clearInterval(interval);
+  }, [user]);
 
-    return () => clearInterval(timer);
-  }, []);
+  // Countdown timer
+  // useEffect(() => {
+  //   const timer = setInterval(() => {
+  //     setWaitTime((prevTime) => {
+  //       if (prevTime <= 1) {
+  //         clearInterval(timer);
+  //         return 0;
+  //       }
+  //       return prevTime - 1;
+  //     });
+  //   }, 1000);
+
+  //   return () => clearInterval(timer);
+  // }, []);
+
+
+  
 
   const formatTime = (seconds) => {
     const m = Math.floor(seconds / 60).toString().padStart(2, '0');
@@ -57,7 +77,7 @@ const RideConfirmation = () => {
       <p className="wait-message">
         You are in the queue. Your position is <strong>{queuePosition ?? '...'}</strong>. You will be assigned a vehicle shortly.
       </p>
-      <p className="wait-time">Estimated Wait Time: {formatTime(waitTime)}</p>
+      <p className="wait-time">Estimated Wait Time: {formatTime(waitTime)} minutes</p>
       <MiniGame />
       <button onClick={handleCancel}>Cancel Ride</button>
     </div>

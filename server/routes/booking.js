@@ -39,47 +39,21 @@ router.post('/', async (req, res) => {
   }
 });
 
-// Get booking status by CWID
-// router.get('/:cwid', async (req, res) => {
-//     const { cwid } = req.params;
+router.get('/status/:email', async (req, res) => {
+    const { email } = req.params;
   
-//     try {
-//       const result = await pool.query(
-//         `SELECT id, pickup_location, status, created_at
-//          FROM ride_bookings
-//          WHERE cwid = $1 AND status = 'pending'
-//          ORDER BY created_at ASC
-//          LIMIT 1`,
-//         [cwid]
-//       );
+    try {
+      const result = await pool.query(
+        `SELECT status FROM ride_bookings WHERE cwid = (SELECT cwid FROM students WHERE email = $1) ORDER BY created_at DESC LIMIT 1`,
+        [email]
+      );
+      if (result.rows.length === 0) return res.status(404).json({ status: 'none' });
   
-//       if (result.rows.length === 0) {
-//         return res.status(404).json({ message: 'No active booking found' });
-//       }
+      res.status(200).json({ status: result.rows[0].status });
+    } catch (err) {
+      console.error('Status check error:', err);
+      res.status(500).json({ message: 'Server error' });
+    }
+  });
   
-//       // Get queue position
-//       const pickup = result.rows[0].pickup_location;
-  
-//       const queueResult = await pool.query(
-//         `SELECT COUNT(*) FROM ride_bookings 
-//          WHERE pickup_location = $1 AND status = 'pending' 
-//          AND created_at < $2`,
-//         [pickup, result.rows[0].created_at]
-//       );
-  
-//       const queuePosition = parseInt(queueResult.rows[0].count) + 1;
-//       const estimatedWait = queuePosition * 2;
-  
-//       res.json({
-//         queuePosition,
-//         estimatedWait,
-//         status: result.rows[0].status
-//       });
-//     } catch (err) {
-//       console.error('🔥 Status fetch error:', err);
-//       res.status(500).json({ message: 'Server error fetching status' });
-//     }
-//   });
-  
-
 module.exports = router;
