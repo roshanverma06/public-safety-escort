@@ -1,123 +1,170 @@
+/* 
+
 .driver-dashboard-container {
-    max-width: 800px;
-    margin: 20px auto 40px;
-    padding: 20px;
-    text-align: center;
-  }
-  
-  .ride-card {
-    background: #fff;
-    border-radius: 8px;
-    padding: 20px;
-    margin-bottom: 20px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.08);
-    text-align: left;
-  }
-  
-  .ride-card p {
-    margin: 6px 0;
-    font-size: 0.95rem;
-  }
-  
-  .actions {
-    margin-top: 12px;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-  }
-  
-  .status-btn, .pickup, .dropoff {
-    flex: 1;
-    min-width: 150px;
-    padding: 8px 12px;
-    font-size: 0.9rem;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: background 0.3s ease;
-    color: white;
-  }
-  
-  .pickup {
-    background-color: #c8102e;
-  }
-  
-  .dropoff {
-    background-color: #4caf50;
-  }
-  
-  .ride-status {
-    margin-top: 10px;
-    font-weight: bold;
-    color: #555;
-  }
-  
-  /* OTP Modal Styles */
-  .otp-modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0,0,0,0.5);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 999;
-  }
-  
-  .otp-modal-content {
-    background: white;
-    padding: 30px;
-    border-radius: 12px;
-    text-align: center;
-    max-width: 300px;
-    width: 90%;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
-  }
-  
-  .otp-modal-content input {
-    width: 80%;
-    padding: 10px;
-    margin: 12px 0;
-    font-size: 1rem;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-  }
-  
-  .otp-buttons {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-  }
-  
-  .confirm {
-    background-color: #c8102e;
-    color: white;
-    padding: 8px 16px;
-    border: none;
-    border-radius: 6px;
-  }
-  
-  .cancel {
-    background-color: #aaa;
-    color: white;
-    padding: 8px 16px;
-    border: none;
-    border-radius: 6px;
-  }
-  
-  /* Navigate Link */
-  .navigate-link {
-    display: inline-block;
-    margin-top: 6px;
-    color: #c8102e;
-    text-decoration: underline;
-    font-weight: 500;
-    transition: color 0.2s;
-  }
-  
-  .navigate-link:hover {
-    color: #90001c;
-  }
-  
+  max-width: 900px;
+  margin: 30px auto;
+  padding: 25px;
+  background-color: #f8f9fa;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  font-family: 'Segoe UI', sans-serif;
+  color: #212529;
+}
+
+.driver-dashboard-container h2 {
+  color: #c8102e; 
+  margin-bottom: 20px;
+}
+
+.vehicle-info {
+  background-color: #e9ecef;
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 25px;
+}
+
+.vehicle-info p {
+  margin: 5px 0;
+  font-size: 16px;
+}
+
+.students-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+.students-table th,
+.students-table td {
+  border: 1px solid #dee2e6;
+  padding: 12px 10px;
+  text-align: center;
+  font-size: 14px;
+}
+
+.students-table th {
+  background-color: #343a40;
+  color: #ffffff;
+}
+
+.students-table tbody tr:nth-child(even) {
+  background-color: #f1f1f1;
+}
+
+.action-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.action-buttons button {
+  background-color: #c8102e;
+  color: white;
+  padding: 10px 18px;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.action-buttons button:hover {
+  background-color: #a50f24;
+}
+
+.add-popup {
+  margin-top: 25px;
+  background-color: #fff3cd;
+  border: 1px solid #ffeeba;
+  padding: 15px;
+  border-radius: 8px;
+  color: #856404;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.add-popup p {
+  margin: 0;
+  font-size: 15px;
+  flex: 1;
+}
+
+.add-popup button {
+  margin-left: 10px;
+  background-color: #343a40;
+  color: white;
+  padding: 6px 12px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.add-popup button:hover {
+  background-color: #23272b;
+} */
+
+.driver-dashboard-container {
+  padding: 20px;
+  max-width: 900px;
+  margin: auto;
+  background-color: #fdfdfd;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.vehicle-info {
+  margin-bottom: 20px;
+}
+
+.students-group {
+  margin-bottom: 30px;
+}
+
+.students-group h4 {
+  margin-bottom: 10px;
+  color: #d32f2f;
+}
+
+.students-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.students-table th,
+.students-table td {
+  border: 1px solid #ddd;
+  padding: 10px;
+  text-align: center;
+}
+
+.students-table th {
+  background-color: #d32f2f;
+  color: white;
+}
+
+.action-buttons {
+  margin-top: 20px;
+}
+
+button {
+  margin: 5px;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 4px;
+  background-color: #d32f2f;
+  color: white;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #a52828;
+}
+
+.add-popup {
+  margin-top: 20px;
+  padding: 10px;
+  background-color: #ffe9e9;
+  border: 1px solid #d32f2f;
+  border-radius: 4px;
+}

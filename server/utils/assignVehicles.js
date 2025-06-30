@@ -1,66 +1,126 @@
-// utils/assignVehicles.js
 const pool = require('../db');
 
 const assignVehicles = async () => {
   try {
-    const vehicles = await pool.query(`
-      SELECT v.id, v.capacity
-      FROM vehicles v
-      WHERE v.status = 'available'
-    `);
+    // ✅ Get all pending students first — if none, exit early
+    const pendingRes = await pool.query(
+      `SELECT COUNT(*) FROM ride_bookings WHERE status = 'pending'`
+    );
+    const pendingCount = parseInt(pendingRes.rows[0].count);
+    if (pendingCount === 0) {
+      //console.log('⏸️ No pending students. Skipping vehicle assignment.');
+      return;
+    }
 
-    for (const vehicle of vehicles.rows) {
-      const vehicleId = vehicle.id;
-      const capacity = parseInt(vehicle.capacity);
+    // ✅ Fetch all vehicles that are available and not full
+    const vehiclesRes = await pool.query(
+      `SELECT * FROM vehicles 
+      WHERE remaining_capacity > 0 
+        AND status = 'available'`
+    );
 
-      // 1️⃣ Get the first pending student
-      const firstStudentRes = await pool.query(`
-        SELECT * FROM ride_bookings
-        WHERE status = 'pending'
-        ORDER BY created_at ASC
-        LIMIT 1
-      `);
 
-      if (firstStudentRes.rows.length === 0) break;
+    const vehicles = vehiclesRes.rows;
+    if (vehicles.length === 0) {
+      console.log('🚗 No available vehicles with capacity. Skipping assignment.');
+      return;
+    }
 
-      const firstStudent = firstStudentRes.rows[0];
-      const pickupLocation = firstStudent.pickup_location;
+    let assignedAny = false;
 
-      // 2️⃣ Get all pending students from this pickup location up to the vehicle's capacity
-      const studentsRes = await pool.query(`
-        SELECT * FROM ride_bookings
-        WHERE status = 'pending' AND pickup_location = $1
-        ORDER BY created_at ASC
-        LIMIT $2
-      `, [pickupLocation, capacity]);
+    for (let vehicle of vehicles) {
+      const { id: vehicleId, remaining_capacity, working_location, started } = vehicle;
 
-      let assignedCount = 0;
+      // 🔹 Before ride start: assign only students from same pickup location
+      if (!started) {
+        let locationToServe = working_location;
 
-      for (const student of studentsRes.rows) {
-        const otp = Math.floor(100000 + Math.random() * 900000).toString();
+        // First student sets the working location
+        if (!locationToServe) {
+          const firstStudentRes = await pool.query(
+            `SELECT * FROM ride_bookings WHERE status = 'pending' ORDER BY created_at ASC LIMIT 1`
+          );
+          if (firstStudentRes.rows.length === 0) continue;
 
-        await pool.query(`
-          UPDATE ride_bookings
-          SET vehicle_id = $1, status = 'assigned', assigned = true,
-              assigned_at = NOW(), otp = $2
-          WHERE id = $3
-        `, [vehicleId, otp, student.id]);
+          const firstStudent = firstStudentRes.rows[0];
+          locationToServe = firstStudent.pickup_location;
 
-        assignedCount++;
-        console.log(`✅ Assigned vehicle ${vehicleId} to student ${student.cwid}`);
+          // Update vehicle's working location
+          await pool.query(
+            `UPDATE vehicles SET working_location = $1 WHERE id = $2`,
+            [locationToServe, vehicleId]
+          );
+        }
+
+        // Fetch students from working location
+        const studentsRes = await pool.query(
+          `SELECT * FROM ride_bookings 
+           WHERE status = 'pending' AND pickup_location = $1 
+           ORDER BY created_at ASC 
+           LIMIT $2`,
+          [locationToServe, remaining_capacity]
+        );
+
+        if (studentsRes.rows.length > 0) {
+          await assignStudentsToVehicle(vehicleId, studentsRes.rows);
+          assignedAny = true;
+        }
       }
 
-      // 3️⃣ If the vehicle is full after assignment, mark it busy
-      if (assignedCount === capacity) {
-        await pool.query(`
-          UPDATE vehicles SET status = 'busy' WHERE id = $1
-        `, [vehicleId]);
-        console.log(`🚗 Vehicle ${vehicleId} is now full and marked as busy`);
+      // 🔹 After ride start: only assign if driver allowed extra pickups
+      else if (started && remaining_capacity > 0) {
+        const driverConsentRes = await pool.query(
+          `SELECT allow_extra_pickups FROM vehicles WHERE id = $1`,
+          [vehicleId]
+        );
+        const allowExtra = driverConsentRes.rows[0].allow_extra_pickups;
+
+        if (allowExtra) {
+          const studentsRes = await pool.query(
+            `SELECT * FROM ride_bookings 
+             WHERE status = 'pending' 
+             ORDER BY created_at ASC 
+             LIMIT $1`,
+            [remaining_capacity]
+          );
+
+          if (studentsRes.rows.length > 0) {
+            await assignStudentsToVehicle(vehicleId, studentsRes.rows);
+            assignedAny = true;
+          }
+        }
       }
     }
 
+    // if (assignedAny) {
+    //   console.log('✅ Vehicle assignment complete.');
+    // } else {
+    //   console.log('ℹ️ No students matched for assignment right now.');
+    // }
+
   } catch (err) {
-    console.error('❌ Vehicle assignment error:', err);
+    console.error('🔥 Vehicle assignment error:', err);
+  }
+};
+
+// 🔄 Utility function
+const assignStudentsToVehicle = async (vehicleId, students) => {
+  for (let student of students) {
+    const otp = Math.floor(100000 + Math.random() * 900000).toString();
+
+    await pool.query(
+      `UPDATE ride_bookings 
+       SET vehicle_id = $1, status = 'assigned', assigned = true, assigned_at = NOW(), otp = $2 
+       WHERE id = $3`,
+      [vehicleId, otp, student.id]
+    );
+
+    await pool.query(
+      `UPDATE vehicles 
+       SET remaining_capacity = remaining_capacity - 1 
+       WHERE id = $1`,
+      [vehicleId]
+    );
   }
 };
 
