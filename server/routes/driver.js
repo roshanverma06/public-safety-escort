@@ -22,7 +22,7 @@ router.get('/assigned/:vehicleId', async (req, res) => {
 });
 
 // 2. Mark ride as started
-router.post('/driver/start-ride', async (req, res) => {
+router.post('/start-ride', async (req, res) => {
     const { driverEmail } = req.body;
   
     try {
@@ -57,16 +57,17 @@ router.post('/driver/start-ride', async (req, res) => {
     }
   });
   
-
-router.post('/accept-more', async (req, res) => {
+  
+  router.post('/accept-more', async (req, res) => {
     const { driverEmail } = req.body;
+    console.log('🔥 Hit /accept-more route');
   
     try {
       // Get vehicle assigned to the driver
       const vehicleRes = await pool.query(
         `SELECT * FROM vehicles 
          WHERE driver_email = $1 
-           AND status = 'busy' 
+           AND status = 'available' 
            AND remaining_capacity > 0`,
         [driverEmail]
       );
@@ -141,14 +142,14 @@ router.post('/complete-ride', async (req, res) => {
       const vehicleId = vehicleRes.rows[0].id;
     // Update bookings
     await pool.query(
-      `UPDATE ride_bookings SET status = 'completed' WHERE vehicle_id = $1 AND status = 'started'`,
+      `UPDATE ride_bookings SET status = 'completed' WHERE vehicle_id = $1 AND status = 'dropped'`,
       [vehicleId]
     );
 
     // Free up the vehicle
     await pool.query(
       `UPDATE vehicles 
-       SET status = 'available', remaining_capacity = capacity, started='false'
+       SET status = 'available', remaining_capacity = capacity, started='false', working_location=null
        WHERE id = $1`,
       [vehicleId]
     );
@@ -174,6 +175,34 @@ router.get('/vehicle/:id', async (req, res) => {
     res.status(500).json({ message: 'Server error' });
   }
 });
+
+// GET /api/driver/waiting-students/:email
+router.get('/waiting-students/:email', async (req, res) => {
+    const { email } = req.params;
+  
+    const driverRes = await pool.query(
+      `SELECT id, working_location, remaining_capacity FROM vehicles WHERE driver_email = $1`,
+      [email]
+    );
+    const vehicle = driverRes.rows[0];
+  
+    const studentsRes = await pool.query(
+      `SELECT pickup_location, COUNT(*) 
+       FROM ride_bookings 
+       WHERE status = 'pending' AND pickup_location <> $1 
+       GROUP BY pickup_location
+       ORDER BY COUNT(*) DESC LIMIT 1`,
+      [vehicle.working_location]
+    );
+  
+    if (studentsRes.rows.length === 0) {
+      return res.json({ location: null, count: 0 });
+    }
+  
+    const { pickup_location, count } = studentsRes.rows[0];
+    res.json({ location: pickup_location, count: parseInt(count) });
+  });
+  
 
 // routes/driver.js
 router.get('/dashboard/:email', async (req, res) => {
@@ -211,7 +240,8 @@ router.get('/dashboard/:email', async (req, res) => {
           vehicleId: vehicle.id,
           vehicleNumber: vehicle.registration_number,
           capacity: vehicle.capacity,
-          remaining: vehicle.remaining_capacity
+          remaining: vehicle.remaining_capacity,
+          status: vehicle.status
         },
         students: assignedStudents
       });

@@ -15,7 +15,7 @@ const RideConfirmation = () => {
 
   const [queuePosition, setQueuePosition] = useState(initialPosition || null);
   const [waitTime, setWaitTime] = useState(initialWait*60 || 600);
-  const [score, setScore] = useState(0);
+  // const [score, setScore] = useState(0);
 
   const user = JSON.parse(localStorage.getItem('user'));
 

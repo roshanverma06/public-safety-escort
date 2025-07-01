@@ -29,16 +29,18 @@ app.use('/api/track', trackRoutes);
 
 const driverRoutes = require('./routes/driver');
 app.use('/api/driver', driverRoutes);
-app.use('/api', driverRoutes); 
+
+
 
 
 const pickupStudent = require('./routes/driver/pickup-student');
 const dropStudent = require('./routes/driver/drop-student');
 const noShow = require('./routes/driver/no-show');
-
 app.use('/api/driver/pickup-student', pickupStudent);
 app.use('/api/driver/drop-student', dropStudent);
 app.use('/api/driver/no-show', noShow);
+
+
 
 
 

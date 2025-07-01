@@ -25,31 +25,22 @@ const DriverDashboard = () => {
     fetchDashboard();
   }, [driverEmail]);
 
-  const handleStartRide = async () => {
-    const confirmed = window.confirm('Start the ride? This will lock the vehicle for current route.');
-    if (confirmed) {
-      await axios.post('http://localhost:5050/api/driver/start-ride', { driverEmail });
-      alert('Ride started!');
-      setShowAddPrompt(true);
-    }
-  };
-
-  const handleCompleteRide = async () => {
-    await axios.post('http://localhost:5050/api/driver/complete-ride', { driverEmail });
-    alert('Ride marked as complete.');
-    window.location.reload();
-  };
 
   const handleAddMore = async (accept) => {
     setShowAddPrompt(false);
     if (accept) {
-      await axios.post('http://localhost:5050/api/driver/accept-more', { driverEmail });
-      alert('New students added from other locations.');
-      window.location.reload();
+      try {
+        await axios.post('http://localhost:5050/api/driver/accept-more', { driverEmail });
+        alert('New students added from other locations.');
+        window.location.reload();
+      } catch (err) {
+        console.error('🔥 Error in handleAddMore:', err.response?.data || err.message);
+      }
     } else {
       alert('Continuing without additional pickups.');
     }
   };
+  
 
   const handlePickup = async (studentId) => {
     const otp = prompt('Enter OTP to verify pickup:');
@@ -99,6 +90,49 @@ const DriverDashboard = () => {
     setStudents(res.data.students);
   };
 
+  const [ridePhase, setRidePhase] = useState('confirm'); // confirm → start → complete
+
+const handleMultiAction = async () => {
+  // 🔐 Check if all OTPs are verified
+  const allVerified = students.every(s => s.status === 'picked_up');
+  const allReVerified = students.every(s => s.status === 'dropped');
+
+  if (!allVerified) {
+    alert('❌ Please verify all the student OTPs.');
+    return;
+  }
+  
+
+  if (ridePhase === 'confirm') {
+    // 🔁 Ask if driver wants to add more students
+    const res = await axios.get(`http://localhost:5050/api/driver/waiting-students/${driverEmail}`);
+    // const { location, count } = res.data;
+    const { count } = res.data;
+
+    if (count > 0 && vehicle.remaining > 0) {
+      setShowAddPrompt(true);
+      
+    }
+
+    setRidePhase('start');
+
+  } else if (ridePhase === 'start') {
+    await axios.post(`http://localhost:5050/api/driver/start-ride`, { driverEmail });
+    alert('✅ Ride Started');
+    setRidePhase('complete');
+
+  } else if (ridePhase === 'complete') {
+    if (!allReVerified) {
+      alert('❌ Please drop all the students.');
+      return;
+    }
+    await axios.post(`http://localhost:5050/api/driver/complete-ride`, { driverEmail });
+    alert('✅ Ride Completed');
+    window.location.reload();
+  }
+};
+
+
   const groupByLocation = () => {
     const grouped = {};
     students.forEach((student) => {
@@ -122,44 +156,58 @@ const DriverDashboard = () => {
           </div>
 
           <h3>🧑‍🎓 Assigned Students</h3>
-          {Object.entries(groupByLocation()).map(([location, studentsList]) => (
-            <div key={location} className="students-group">
-              <h4>📍 Pickup Location: {location}</h4>
-              <table className="students-table">
-                <thead>
-                  <tr>
-                    <th>Name</th>
-                    <th>Drop Location</th>
-                    <th>Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {studentsList.map((s) => (
-                    <tr key={s.id}>
-                      <td>{s.student_name}</td>
-                      <td>{s.drop_location}</td>
-                      <td>
-                        {s.status === 'assigned' && (
-                          <>
-                            <button onClick={() => handlePickup(s.id)}>Pickup</button>
-                            <button onClick={() => handleNoShow(s.id)}>No Show</button>
-                          </>
-                        )}
-                        {s.status === 'picked_up' && (
-                          <button onClick={() => handleDrop(s.id)}>Drop</button>
-                        )}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          ))}
+          {students.length === 0 ? (
+            <p style={{ marginTop: '1rem', fontWeight: 'bold' }}>🚫 No students assigned yet.</p>
+          ) : (
+            <>
+              {Object.entries(groupByLocation()).map(([location, studentsList]) => (
+                <div key={location} className="students-group">
+                  <h4>📍 Pickup Location: {location}</h4>
+                  <table className="students-table">
+                    <thead>
+                      <tr>
+                        <th>Name</th>
+                        <th>Drop Location</th>
+                        <th>Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {studentsList.map((s) => (
+                        <tr key={s.id}>
+                          <td>{s.student_name}</td>
+                          <td>{s.drop_location}</td>
+                          <td>
+                            {s.status === 'assigned' && (
+                              <>
+                                <button onClick={() => handlePickup(s.id)}>Pickup</button>
+                                <button onClick={() => handleNoShow(s.id)}>No Show</button>
+                              </>
+                            )}
+                            {s.status === 'picked_up' && (
+                              <button onClick={() => handleDrop(s.id)}>Drop</button>
+                            )}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              ))}
 
-          <div className="action-buttons">
-            <button onClick={handleStartRide}>Start Ride</button>
-            <button onClick={handleCompleteRide}>Complete Ride</button>
-          </div>
+            </>  
+          )}
+          {vehicle.status !== 'available' && (
+                <div className="action-buttons">
+                  <button onClick={handleMultiAction}>
+                    {ridePhase === 'confirm' ? 'Confirm Pickup' :
+                    ridePhase === 'start'   ? 'Start Ride' :
+                    'Complete Ride'}
+                  </button>
+                </div>
+              )}
+
+        
+
 
           {showAddPrompt && (
             <div className="add-popup">
@@ -177,3 +225,4 @@ const DriverDashboard = () => {
 };
 
 export default DriverDashboard;
+
