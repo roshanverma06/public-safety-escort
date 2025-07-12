@@ -84,6 +84,46 @@ router.post('/login', async (req, res) => {
       res.status(500).json({ message: 'Server error. Please try again later.' });
     }
   });
+
+// Rout for driver login
+  router.post('/driver-login', async (req, res) => {
+    const { email, password } = req.body;
+  
+    try {
+      // Check if fields are present
+      if (!email || !password) {
+        return res.status(400).json({ message: 'Please enter both email and password.' });
+      }
+  
+      // Check if driver exists
+      const result = await pool.query('SELECT * FROM drivers WHERE email = $1', [email]);
+      const user = result.rows[0];
+  
+      if (!user) {
+        return res.status(400).json({ message: 'Invalid email or password.' });
+      }
+  
+      // Compare password
+      const isMatch = await bcrypt.compare(password, user.password);
+      if (!isMatch) {
+        return res.status(400).json({ message: 'Invalid email or password.' });
+      }
+  
+      // You can add JWT later here if needed
+      res.status(200).json({
+        message: 'Login successful',
+        user: {
+          id: user.id,
+          name: user.driver_name,
+          email: user.email,
+        }
+      });
+  
+    } catch (err) {
+      console.error('🔥 Login Error:', err.message);
+      res.status(500).json({ message: 'Server error. Please try again later.' });
+    }
+  });  
   
 
 module.exports = router;

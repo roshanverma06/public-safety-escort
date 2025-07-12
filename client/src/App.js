@@ -14,6 +14,8 @@ import ForgotPassword from './pages/ForgotPassword';
 import RideConfirmation from './pages/RideConfirmation';
 import TrackRide from './pages/TrackRide';
 import DriverHistory from './pages/DriverHistory';
+import DriverLogin from './pages/DriverLogin';
+import AdminLogin from './pages/AdminLogin';
 import ProtectedRoute from './components/ProtectedRoute';
 
 function App() {
@@ -23,13 +25,16 @@ function App() {
       <Routes>
         <Route path="/" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/book-ride" element={<ProtectedRoute><BookRide /></ProtectedRoute>} />
-        <Route path="/driver" element={<ProtectedRoute> <DriverDashboard /></ProtectedRoute>} />
-        <Route path="/admin" element={<ProtectedRoute><AdminDashboard /></ProtectedRoute>} />
-        <Route path="/forgot-password" element={<ProtectedRoute><ForgotPassword /></ProtectedRoute>} />
-        <Route path="/ride-confirmation" element={<ProtectedRoute><RideConfirmation /></ProtectedRoute>} />
-        <Route path="/track" element={<ProtectedRoute><TrackRide /></ProtectedRoute>} />
-        <Route path="/history" element={<ProtectedRoute><DriverHistory /></ProtectedRoute>} />
+        <Route path="/driver-login" element={<DriverLogin />} />
+        <Route path="/admin-login" element={<AdminLogin />} />
+        <Route path="/book-ride" element={<ProtectedRoute allowedRoles={['student']} ><BookRide /></ProtectedRoute>} />
+        <Route path="/track" element={<ProtectedRoute allowedRoles={['student']}><TrackRide /></ProtectedRoute>} />
+        <Route path="/forgot-password" element={<ProtectedRoute allowedRoles={['student']}><ForgotPassword /></ProtectedRoute>} />
+        <Route path="/ride-confirmation" element={<ProtectedRoute allowedRoles={['student']}><RideConfirmation /></ProtectedRoute>} />
+        <Route path="/driver" element={<ProtectedRoute allowedRoles={['driver']}> <DriverDashboard /></ProtectedRoute>} />
+        <Route path="/history" element={<ProtectedRoute allowedRoles={['driver']}><DriverHistory /></ProtectedRoute>} />
+        <Route path="/admin" element={<ProtectedRoute allowedRoles={['admin']}><AdminDashboard /></ProtectedRoute>} />
+
       </Routes>
       <Footer />
     </BrowserRouter>

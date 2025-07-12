@@ -40,6 +40,9 @@ app.use('/api/driver/pickup-student', pickupStudent);
 app.use('/api/driver/drop-student', dropStudent);
 app.use('/api/driver/no-show', noShow);
 
+const adminRoutes = require('./routes/admin');
+app.use('/api/admin', adminRoutes);
+
 
 
 

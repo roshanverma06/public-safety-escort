@@ -1,0 +1,43 @@
+.admin-form-container {
+  max-width: 400px;
+  margin: 80px auto;
+  padding: 40px;
+  background-color: #fafafa;
+  border-radius: 10px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.admin-form-container h2 {
+  color: #c00;
+  margin-bottom: 20px;
+  font-weight: bold;
+}
+
+.admin-input {
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+  box-sizing: border-box;
+}
+
+.admin-submit-btn {
+  width: 100%;
+  background-color: #c00;
+  color: white;
+  padding: 12px;
+  font-size: 16px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: background-color 0.3s ease;
+}
+
+.admin-submit-btn:hover {
+  background-color: #a00;
+}

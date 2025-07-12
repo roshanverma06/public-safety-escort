@@ -1,10 +1,10 @@
+// src/pages/DriverLogin.js
 import React, { useState, useEffect } from 'react';
-import './Login.css';
 import axios from 'axios';
+import './Login.css'; // Reuse the same CSS as student login
 import { useNavigate } from 'react-router-dom';
 
-const Login = () => {
-
+const DriverLogin = () => {
 
   const [formData, setFormData] = useState({ email: '', password: '' });
   const [error, setError] = useState('');
@@ -13,7 +13,7 @@ const Login = () => {
   useEffect(() => {
     const user = localStorage.getItem('user');
     if (user) {
-      navigate('/book-ride'); // or dashboard/status depending on your flow
+      navigate('/driver'); // or dashboard/status depending on your flow
     }
   }, [navigate]);
 
@@ -23,10 +23,10 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError(''); // reset error
+    setError('');
 
     try {
-      const res = await axios.post('http://localhost:5050/api/auth/login', formData);
+      const res = await axios.post('http://localhost:5050/api/auth/driver-login', formData);
 
       if (res.status === 200) {
         console.log('✅ Login successful:', res.data);
@@ -35,7 +35,7 @@ const Login = () => {
         localStorage.setItem('user', JSON.stringify(res.data.user));
 
         // Redirect to Book Ride page
-        navigate('/book-ride');
+        navigate('/driver');
       }
     } catch (err) {
       console.error('❌ Login failed:', err.response?.data?.message || err.message);
@@ -46,14 +46,14 @@ const Login = () => {
   return (
     <div className="login-container">
       <form className="login-form" onSubmit={handleSubmit}>
-        <h2>Student Login</h2>
+        <h2>Driver Login</h2>
         {error && <p style={{ color: 'red' }}>{error}</p>}
         <label>
           Email:
           <input
           type="email"
           name="email"
-          placeholder="Student Email"
+          placeholder="Driver Email"
           value={formData.email}
           onChange={handleChange}
           required
@@ -71,15 +71,10 @@ const Login = () => {
           required
         />
         </label>
-        <div className="login-links">
-            <a href="/forgotpassword">Forgot Password?</a>
-            <span> | </span>
-            <a href="/register">Create Account</a>
-        </div>
         <button type="submit">Login</button>
       </form>
-    </div>
+      </div>
   );
 };
 
-export default Login;
+export default DriverLogin;
