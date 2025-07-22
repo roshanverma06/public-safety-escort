@@ -5,9 +5,8 @@ import Header from './components/Header';
 import Footer from './components/Footer';
 import Login from './pages/Login';
 import BookRide from './pages/BookRide';
-import QueueStatus from './pages/QueueStatus';
-import OTP from './pages/OTP';
 import DriverDashboard from './pages/DriverDashboard';
+import DriverLiveView from './pages/DriverLiveView';
 import AdminDashboard from './pages/AdminDashboard';
 import Register from './pages/Register';
 import ForgotPassword from './pages/ForgotPassword';
@@ -32,6 +31,7 @@ function App() {
         <Route path="/forgot-password" element={<ProtectedRoute allowedRoles={['student']}><ForgotPassword /></ProtectedRoute>} />
         <Route path="/ride-confirmation" element={<ProtectedRoute allowedRoles={['student']}><RideConfirmation /></ProtectedRoute>} />
         <Route path="/driver" element={<ProtectedRoute allowedRoles={['driver']}> <DriverDashboard /></ProtectedRoute>} />
+        <Route path="/driver-live" element={<ProtectedRoute allowedRoles={['driver']}> <DriverLiveView /></ProtectedRoute>} />
         <Route path="/history" element={<ProtectedRoute allowedRoles={['driver']}><DriverHistory /></ProtectedRoute>} />
         <Route path="/admin" element={<ProtectedRoute allowedRoles={['admin']}><AdminDashboard /></ProtectedRoute>} />
 

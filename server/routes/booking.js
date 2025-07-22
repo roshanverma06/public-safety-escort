@@ -10,7 +10,7 @@ router.post('/', async (req, res) => {
   try {
     // Insert the new booking with 'pending' status
     await pool.query(
-      `INSERT INTO ride_bookings (student_name, cwid, pickup_location, drop_location, status)
+      `INSERT INTO ride_bookings (student_name, cwid, pickup_location_id, drop_location, status)
        VALUES ($1, $2, $3, $4, $5)`,
       [name, cwid, pickup, dropoff, 'pending']
     );
@@ -18,7 +18,7 @@ router.post('/', async (req, res) => {
     // // Now calculate queue position for this student based on pickup location
     const queueResult = await pool.query(
       `SELECT COUNT(*) FROM ride_bookings 
-       WHERE pickup_location = $1 AND status = 'pending'`,
+       WHERE pickup_location_id = $1 AND status = 'pending'`,
       [pickup]
     );
 

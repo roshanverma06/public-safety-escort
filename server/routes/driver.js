@@ -9,7 +9,7 @@ router.get('/assigned/:vehicleId', async (req, res) => {
   const { vehicleId } = req.params;
   try {
     const result = await pool.query(
-      `SELECT student_name, pickup_location, drop_location, otp, status 
+      `SELECT student_name, pickup_location_id, drop_location, otp, status 
        FROM ride_bookings 
        WHERE vehicle_id = $1 AND (status = 'assigned' OR status = 'started')`,
       [vehicleId]
@@ -83,7 +83,7 @@ router.post('/start-ride', async (req, res) => {
       const extraStudentsRes = await pool.query(
         `SELECT * FROM ride_bookings 
          WHERE status = 'pending' 
-           AND pickup_location != $1
+           AND pickup_location_id != $1
          ORDER BY created_at ASC
          LIMIT $2`,
         [working_location, remaining_capacity]
@@ -187,10 +187,10 @@ router.get('/waiting-students/:email', async (req, res) => {
     const vehicle = driverRes.rows[0];
   
     const studentsRes = await pool.query(
-      `SELECT pickup_location, COUNT(*) 
+      `SELECT pickup_location_id, COUNT(*) 
        FROM ride_bookings 
-       WHERE status = 'pending' AND pickup_location <> $1 
-       GROUP BY pickup_location
+       WHERE status = 'pending' AND pickup_location_id <> $1 
+       GROUP BY pickup_location_id
        ORDER BY COUNT(*) DESC LIMIT 1`,
       [vehicle.working_location]
     );
@@ -199,8 +199,8 @@ router.get('/waiting-students/:email', async (req, res) => {
       return res.json({ location: null, count: 0 });
     }
   
-    const { pickup_location, count } = studentsRes.rows[0];
-    res.json({ location: pickup_location, count: parseInt(count) });
+    const { pickup_location_id, count } = studentsRes.rows[0];
+    res.json({ location: pickup_location_id, count: parseInt(count) });
   });
   
 
@@ -223,11 +223,11 @@ router.get('/dashboard/:email', async (req, res) => {
   
       // 2. Fetch all students assigned to this vehicle
       const studentsRes = await pool.query(
-        `SELECT id, student_name, pickup_location, drop_location, otp, status
+        `SELECT id, student_name, pickup_location_id, drop_location, otp, status
          FROM ride_bookings
          WHERE vehicle_id = $1
            AND status IN ('assigned', 'picked_up', 'started')
-         ORDER BY pickup_location, created_at ASC`,
+         ORDER BY pickup_location_id, created_at ASC`,
         [vehicle.id]
       );
       

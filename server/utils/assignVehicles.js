@@ -18,12 +18,14 @@ const assignVehicles = async () => {
       console.log('🚗 No available vehicles.');
       return;
     }
+    console.log(vehicles)
 
     const locationMap = {};
 
     // ✅ Group students by pickup location (FIFO)
     for (let student of pendingStudents) {
-      const loc = student.pickup_location;
+      const loc = student.pickup_location_id;
+      console.log(loc)
       if (!locationMap[loc]) locationMap[loc] = [];
       locationMap[loc].push(student);
     }
@@ -36,7 +38,7 @@ const assignVehicles = async () => {
       // 🚩 If not set, pick the earliest location from students list
       if (!locationToServe) {
         const firstStudent = pendingStudents[0];
-        locationToServe = firstStudent.pickup_location;
+        locationToServe = firstStudent.pickup_location_id;
 
         // Set working location
         await pool.query(

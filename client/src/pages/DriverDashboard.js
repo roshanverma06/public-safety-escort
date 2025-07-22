@@ -2,6 +2,8 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import './DriverDashboard.css';
+import DriverLiveView from './DriverLiveView'; // 1. Import the component
+
 
 const DriverDashboard = () => {
   const [vehicle, setVehicle] = useState(null);
@@ -136,10 +138,10 @@ const handleMultiAction = async () => {
   const groupByLocation = () => {
     const grouped = {};
     students.forEach((student) => {
-      if (!grouped[student.pickup_location]) {
-        grouped[student.pickup_location] = [];
+      if (!grouped[student.pickup_location_id]) {
+        grouped[student.pickup_location_id] = [];
       }
-      grouped[student.pickup_location].push(student);
+      grouped[student.pickup_location_id].push(student);
     });
     return grouped;
   };
@@ -154,6 +156,14 @@ const handleMultiAction = async () => {
             <p><strong>Vehicle Reg:</strong> {vehicle.vehicleNumber}</p>
             <p><strong>Remaining Capacity:</strong> {vehicle.remaining}/{vehicle.capacity}</p>
           </div>
+                {/* 2. Conditionally render the DriverLiveView component */}
+      {vehicle ? (
+        <DriverLiveView vehicle={vehicle} />
+      ) : (
+        <p>No vehicle information available.</p>
+      )}
+
+      <hr style={{ margin: '2rem 0' }} />
 
           <h3>🧑‍🎓 Assigned Students</h3>
           {students.length === 0 ? (
