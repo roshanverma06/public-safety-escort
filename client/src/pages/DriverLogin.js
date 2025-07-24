@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './Login.css'; // Reuse the same CSS as student login
 import { useNavigate } from 'react-router-dom';
+const backendURL = process.env.REACT_APP_BACKEND_URL;
 
 const DriverLogin = () => {
 
@@ -26,7 +27,7 @@ const DriverLogin = () => {
     setError('');
 
     try {
-      const res = await axios.post('http://localhost:5050/api/auth/driver-login', formData);
+      const res = await axios.post('${backendURL}/api/auth/driver-login', formData);
 
       if (res.status === 200) {
         console.log('✅ Login successful:', res.data);

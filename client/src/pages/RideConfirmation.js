@@ -5,6 +5,7 @@ import { useLocation } from 'react-router-dom';
 import './RideConfirmation.css';
 import MiniGame from '../components/MiniGame';
 import axios from 'axios';
+const backendURL = process.env.REACT_APP_BACKEND_URL;
 
 const RideConfirmation = () => {
   const location = useLocation();
@@ -22,7 +23,7 @@ const RideConfirmation = () => {
   useEffect(() => {
     const interval = setInterval(async () => {
       try {
-        const res = await axios.get(`http://localhost:5050/api/booking/status/${user.email}`);
+        const res = await axios.get(`${backendURL}/api/booking/status/${user.email}`);
         console.log(res.data.status);
         if (res.data.status === 'assigned') {
           window.location.href = '/track';
@@ -62,7 +63,7 @@ const RideConfirmation = () => {
 
   const handleCancel = async () => {
     try {
-      await axios.post('http://localhost:5050/api/cancel-ride', { email: user.email });
+      await axios.post('${backendURL}/api/cancel-ride', { email: user.email });
       alert('Ride cancelled.');
       window.location.href = '/';
     } catch (err) {

@@ -2,7 +2,8 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import './DriverDashboard.css';
-import DriverLiveView from './DriverLiveView'; // 1. Import the component
+import DriverLiveView from './DriverLiveView';
+const backendURL = process.env.REACT_APP_BACKEND_URL;
 
 
 const DriverDashboard = () => {
@@ -15,7 +16,7 @@ const DriverDashboard = () => {
   useEffect(() => {
     const fetchDashboard = async () => {
       try {
-        const res = await axios.get(`http://localhost:5050/api/driver/dashboard/${driverEmail}`);
+        const res = await axios.get(`${backendURL}/api/driver/dashboard/${driverEmail}`);
         setVehicle(res.data.vehicle);
         console.log(res.data.students);
         setStudents(res.data.students);
@@ -32,7 +33,7 @@ const DriverDashboard = () => {
     setShowAddPrompt(false);
     if (accept) {
       try {
-        await axios.post('http://localhost:5050/api/driver/accept-more', { driverEmail });
+        await axios.post('${backendURL}/api/driver/accept-more', { driverEmail });
         alert('New students added from other locations.');
         window.location.reload();
       } catch (err) {
@@ -48,7 +49,7 @@ const DriverDashboard = () => {
     const otp = prompt('Enter OTP to verify pickup:');
     if (!otp) return;
     try {
-      await axios.post('http://localhost:5050/api/driver/pickup-student', {
+      await axios.post('${backendURL}/api/driver/pickup-student', {
         studentId,
         enteredOtp: otp
       });
@@ -63,7 +64,7 @@ const DriverDashboard = () => {
     const otp = prompt('Enter OTP to verify drop:');
     if (!otp) return;
     try {
-      await axios.post('http://localhost:5050/api/driver/drop-student', {
+      await axios.post('${backendURL}/api/driver/drop-student', {
         studentId,
         enteredOtp: otp
       });
@@ -78,7 +79,7 @@ const DriverDashboard = () => {
     const confirmed = window.confirm('Mark this student as no show?');
     if (!confirmed) return;
     try {
-      await axios.post('http://localhost:5050/api/driver/no-show', { studentId });
+      await axios.post('${backendURL}/api/driver/no-show', { studentId });
       alert('Marked as no show.');
       refreshDashboard();
     } catch (err) {
@@ -87,7 +88,7 @@ const DriverDashboard = () => {
   };
 
   const refreshDashboard = async () => {
-    const res = await axios.get(`http://localhost:5050/api/driver/dashboard/${driverEmail}`);
+    const res = await axios.get(`${backendURL}/api/driver/dashboard/${driverEmail}`);
     setVehicle(res.data.vehicle);
     setStudents(res.data.students);
   };
@@ -107,7 +108,7 @@ const handleMultiAction = async () => {
 
   if (ridePhase === 'confirm') {
     // 🔁 Ask if driver wants to add more students
-    const res = await axios.get(`http://localhost:5050/api/driver/waiting-students/${driverEmail}`);
+    const res = await axios.get(`${backendURL}/api/driver/waiting-students/${driverEmail}`);
     // const { location, count } = res.data;
     const { count } = res.data;
 
@@ -119,7 +120,7 @@ const handleMultiAction = async () => {
     setRidePhase('start');
 
   } else if (ridePhase === 'start') {
-    await axios.post(`http://localhost:5050/api/driver/start-ride`, { driverEmail });
+    await axios.post(`${backendURL}/api/driver/start-ride`, { driverEmail });
     alert('✅ Ride Started');
     setRidePhase('complete');
 
@@ -128,7 +129,7 @@ const handleMultiAction = async () => {
       alert('❌ Please drop all the students.');
       return;
     }
-    await axios.post(`http://localhost:5050/api/driver/complete-ride`, { driverEmail });
+    await axios.post(`${backendURL}/api/driver/complete-ride`, { driverEmail });
     alert('✅ Ride Completed');
     window.location.reload();
   }

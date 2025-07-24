@@ -4,6 +4,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import './TrackRide.css';
 import axios from 'axios';
 import { socket } from '../socket';
+const backendURL = process.env.REACT_APP_BACKEND_URL;
 
 // --- Leaflet Map Imports ---
 import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
@@ -84,7 +85,7 @@ const TrackRide = () => {
     // 1. Fetch ride details
     const fetchRideDetails = async () => {
       try {
-        const res = await axios.get(`http://localhost:5050/api/track/${user.email}`);
+        const res = await axios.get(`${backendURL}/api/track/${user.email}`);
         setRideInfo(res.data);
         
         // Connect and join room right after getting data

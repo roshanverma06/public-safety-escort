@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import './Register.css';
 import axios from 'axios';
+const backendURL = process.env.REACT_APP_BACKEND_URL;
 
 function Register() {
   const [formData, setFormData] = useState({
@@ -43,7 +44,7 @@ function Register() {
     if (!validate()) return;
 
     try {
-      const response = await axios.post("http://localhost:5050/api/auth/register", formData);
+      const response = await axios.post("${backendURL}/api/auth/register", formData);
       setSuccessMessage('Successfully registered!');
       setFormData({
         name: '',

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import './AdminDashboard.css';
+const backendURL = process.env.REACT_APP_BACKEND_URL;
 const AdminDashboard = () => {
   const [form, setForm] = useState({
     name: '',
@@ -16,7 +17,7 @@ const AdminDashboard = () => {
 
   const handleAddDriver = async () => {
     try {
-      await axios.post('http://localhost:5050/api/admin/add-driver', form);
+      await axios.post('${backendURL}/api/admin/add-driver', form);
       alert('Driver added successfully');
       setForm({ name: '', email: '',  vehicle_number: '', capacity: '', password: '' });
     } catch (err) {

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './Login.css';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+const backendURL = process.env.REACT_APP_BACKEND_URL;
 
 const Login = () => {
 
@@ -26,7 +27,7 @@ const Login = () => {
     setError(''); // reset error
 
     try {
-      const res = await axios.post('http://localhost:5050/api/auth/login', formData);
+      const res = await axios.post('${backendURL}/api/auth/login', formData);
 
       if (res.status === 200) {
         console.log('✅ Login successful:', res.data);
