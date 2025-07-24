@@ -44,7 +44,7 @@ function Register() {
     if (!validate()) return;
 
     try {
-      const response = await axios.post("${backendURL}/api/auth/register", formData);
+      const response = await axios.post(`${backendURL}/api/auth/register`, formData);
       setSuccessMessage('Successfully registered!');
       setFormData({
         name: '',

@@ -14,7 +14,7 @@ const Login = () => {
   useEffect(() => {
     const user = localStorage.getItem('user');
     if (user) {
-      navigate('/book-ride'); // or dashboard/status depending on your flow
+      navigate('/book-ride');
     }
   }, [navigate]);
 
@@ -27,7 +27,7 @@ const Login = () => {
     setError(''); // reset error
 
     try {
-      const res = await axios.post('${backendURL}/api/auth/login', formData);
+      const res = await axios.post(`${backendURL}/api/auth/login`, formData);
 
       if (res.status === 200) {
         console.log('✅ Login successful:', res.data);

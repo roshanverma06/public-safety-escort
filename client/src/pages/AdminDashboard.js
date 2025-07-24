@@ -17,7 +17,7 @@ const AdminDashboard = () => {
 
   const handleAddDriver = async () => {
     try {
-      await axios.post('${backendURL}/api/admin/add-driver', form);
+      await axios.post(`${backendURL}/api/admin/add-driver`, form);
       alert('Driver added successfully');
       setForm({ name: '', email: '',  vehicle_number: '', capacity: '', password: '' });
     } catch (err) {

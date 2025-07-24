@@ -63,7 +63,7 @@ const RideConfirmation = () => {
 
   const handleCancel = async () => {
     try {
-      await axios.post('${backendURL}/api/cancel-ride', { email: user.email });
+      await axios.post(`${backendURL}/api/cancel-ride`, { email: user.email });
       alert('Ride cancelled.');
       window.location.href = '/';
     } catch (err) {

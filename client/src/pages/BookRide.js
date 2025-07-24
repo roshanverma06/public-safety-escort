@@ -30,7 +30,7 @@ function BookRide() {
 
       try {
         const profilePromise = axios.get(`${backendURL}/api/profile/${user.email}`);
-        const locationsPromise = axios.get('${backendURL}/api/locations');
+        const locationsPromise = axios.get(`${backendURL}/api/locations`);
 
         const [profileRes, locationsRes] = await Promise.all([profilePromise, locationsPromise]);
         
@@ -69,7 +69,7 @@ function BookRide() {
     };
 
     try {
-      const res = await axios.post('${backendURL}/api/booking', bookingData);
+      const res = await axios.post(`${backendURL}/api/booking`, bookingData);
       const { queuePosition, estimatedWait } = res.data;
       navigate(`/ride-confirmation?position=${queuePosition}&wait=${estimatedWait}`);
     } catch (err) {

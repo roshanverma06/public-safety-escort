@@ -27,7 +27,7 @@ const AdminLogin = () => {
     setError(''); // reset error
 
     try {
-      const res = await axios.post('${backendURL}/api/admin/login', formData);
+      const res = await axios.post(`${backendURL}/api/admin/login`, formData);
 
       if (res.status === 200) {
         console.log('✅ Login successful:', res.data);

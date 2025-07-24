@@ -33,7 +33,7 @@ const DriverDashboard = () => {
     setShowAddPrompt(false);
     if (accept) {
       try {
-        await axios.post('${backendURL}/api/driver/accept-more', { driverEmail });
+        await axios.post(`${backendURL}/api/driver/accept-more`, { driverEmail });
         alert('New students added from other locations.');
         window.location.reload();
       } catch (err) {
@@ -49,7 +49,7 @@ const DriverDashboard = () => {
     const otp = prompt('Enter OTP to verify pickup:');
     if (!otp) return;
     try {
-      await axios.post('${backendURL}/api/driver/pickup-student', {
+      await axios.post(`${backendURL}/api/driver/pickup-student`, {
         studentId,
         enteredOtp: otp
       });
@@ -64,7 +64,7 @@ const DriverDashboard = () => {
     const otp = prompt('Enter OTP to verify drop:');
     if (!otp) return;
     try {
-      await axios.post('${backendURL}/api/driver/drop-student', {
+      await axios.post(`${backendURL}/api/driver/drop-student`, {
         studentId,
         enteredOtp: otp
       });
@@ -79,7 +79,7 @@ const DriverDashboard = () => {
     const confirmed = window.confirm('Mark this student as no show?');
     if (!confirmed) return;
     try {
-      await axios.post('${backendURL}/api/driver/no-show', { studentId });
+      await axios.post(`${backendURL}/api/driver/no-show`, { studentId });
       alert('Marked as no show.');
       refreshDashboard();
     } catch (err) {
