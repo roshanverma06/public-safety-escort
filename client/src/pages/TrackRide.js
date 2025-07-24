@@ -4,13 +4,13 @@ import React, { useEffect, useState, useRef } from 'react';
 import './TrackRide.css';
 import axios from 'axios';
 import { socket } from '../socket';
-const backendURL = process.env.REACT_APP_BACKEND_URL;
+
 
 // --- Leaflet Map Imports ---
 import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-
+const backendURL = process.env.REACT_APP_BACKEND_URL;
 // --- Helper Functions & Components ---
 
 // Calculates distance between two lat/lng points in miles
