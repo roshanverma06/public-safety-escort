@@ -31,6 +31,8 @@ app.use(cors());
 app.use(express.json());
 
 // Routes
+const AdminLogin = require('./routes/admin');
+app.use('/api/admin', AdminLogin);
 app.use('/api/auth', authRoutes);
 const profileRoutes = require('./routes/profile');
 app.use('/api/profile', profileRoutes);
@@ -72,7 +74,7 @@ io.on('connection', (socket) => {
   });
 });
 
-setInterval(assignVehicles, 10000);
+setInterval(assignVehicles, 50000);
 
 // Start the server using the http server instance
 server.listen(PORT, () => {
