@@ -31,8 +31,8 @@ app.use(cors());
 app.use(express.json());
 
 // Routes
-const AdminLogin = require('./routes/admin');
-app.use('/api/admin', AdminLogin);
+const adminLogin = require('./routes/admin');
+app.use('/api/admin', adminLogin);
 app.use('/api/auth', authRoutes);
 const profileRoutes = require('./routes/profile');
 app.use('/api/profile', profileRoutes);
