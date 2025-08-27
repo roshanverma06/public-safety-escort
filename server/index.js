@@ -31,8 +31,7 @@ app.use(cors());
 app.use(express.json());
 
 // Routes
-const adminLogin = require('./routes/admin');
-app.use('/api/admin', adminLogin);
+
 app.use('/api/auth', authRoutes);
 const profileRoutes = require('./routes/profile');
 app.use('/api/profile', profileRoutes);
@@ -44,6 +43,17 @@ const driverRoutes = require('./routes/driver');
 app.use('/api/driver', driverRoutes);
 const locationsRoutes = require('./routes/locations');
 app.use('/api/locations', locationsRoutes);
+
+
+const pickupStudent = require('./routes/driver/pickup-student');
+const dropStudent = require('./routes/driver/drop-student');
+const noShow = require('./routes/driver/no-show');
+app.use('/api/driver/pickup-student', pickupStudent);
+app.use('/api/driver/drop-student', dropStudent);
+app.use('/api/driver/no-show', noShow);
+
+const adminRoutes = require('./routes/admin');
+app.use('/api/admin', adminRoutes);
 
 // Socket.IO Connection & Room Logic
 io.on('connection', (socket) => {
